@@ -3,7 +3,6 @@ package com.example.order_ms.exception;
 
 import com.example.order_ms.response.ErrorResponse;
 import jakarta.validation.ConstraintViolationException;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
