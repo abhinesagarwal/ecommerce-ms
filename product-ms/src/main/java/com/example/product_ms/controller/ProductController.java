@@ -1,9 +1,10 @@
 package com.example.product_ms.controller;
 
 import com.example.product_ms.dto.ProductDTO;
-import com.example.product_ms.entity.ProductEntity;
 import com.example.product_ms.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
+
     @Autowired
     private ProductService productService;
 
@@ -25,13 +27,13 @@ public class ProductController {
     }
 
     @PostMapping
-    public ProductEntity addProduct(@RequestBody ProductEntity product) {
-        return productService.addProduct(product);
+    public ProductDTO addProduct(@Valid @RequestBody ProductDTO productDTO) {
+        return productService.addProduct(productDTO);
     }
 
     @PutMapping("/{id}")
-    public ProductEntity updateProduct(@PathVariable String id, @RequestBody ProductEntity product) {
-        return productService.updateProduct(id, product);
+    public ProductDTO updateProduct(@PathVariable String id, @Valid @RequestBody ProductDTO productDTO) {
+        return productService.updateProduct(id, productDTO);
     }
 
     @DeleteMapping("/{id}")
