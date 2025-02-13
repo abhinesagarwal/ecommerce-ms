@@ -2,6 +2,7 @@ package com.example.product_ms.controller;
 
 import com.example.product_ms.dto.InventoryDTO;
 import com.example.product_ms.service.InventoryService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ public class InventoryController {
     private InventoryService inventoryService;
 
     @PutMapping("/{id}")
-    public InventoryDTO updateInventory(@PathVariable String id, @RequestBody InventoryDTO inventoryDTO) {
+    public InventoryDTO updateInventory(@PathVariable String id, @Valid @RequestBody InventoryDTO inventoryDTO) {
         return inventoryService.updateInventory(id, inventoryDTO);
     }
 

@@ -19,6 +19,8 @@ public class ProductDTO {
     @NotNull(message = "Price is required")
     @Positive(message = "Price must be positive")
     private double price;
+
+    @NotEmpty(message = "Name is required")
     private String productType;
     private String productUrl;
     private InventoryDTO inventory;

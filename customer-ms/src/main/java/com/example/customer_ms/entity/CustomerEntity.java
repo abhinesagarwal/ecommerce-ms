@@ -12,11 +12,6 @@ public class CustomerEntity {
 
     @Id
     private String id;
-
-    @NotEmpty(message = "Name is required")
     private String name;
-
-    @ValidEmail
-    @NotEmpty(message = "Email is required")
     private String email;
 }

@@ -8,10 +8,14 @@ import com.example.product_ms.repository.InventoryRepository;
 import com.example.product_ms.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.ibm.java.diagnostics.utils.Context.logger;
 
 @Service
 public class ProductService {
@@ -27,6 +31,9 @@ public class ProductService {
 
     public List<ProductDTO> getAllProducts() {
         List<ProductEntity> products = productRepository.findAll();
+        if (products.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No products found");
+        }
         List<ProductDTO> productDTOs = new ArrayList<>();
         for (ProductEntity product : products) {
             ProductDTO productDTO = mapProductDTO(product);
@@ -36,7 +43,8 @@ public class ProductService {
     }
 
     public ProductDTO getProductById(String id) {
-        ProductEntity product = productRepository.findById(id).orElseThrow();
+        ProductEntity product = productRepository.findById(id).
+                orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with ID: " + id));
         return mapProductDTO(product);
     }
 
@@ -65,7 +73,8 @@ public class ProductService {
     }
 
     public ProductDTO updateProduct(String id, ProductDTO productDTO) {
-        ProductEntity existingProduct = productRepository.findById(id).orElseThrow();
+        ProductEntity existingProduct = productRepository.findById(id).
+                orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with ID: " + id));
         existingProduct.setName(productDTO.getName());
         existingProduct.setPrice(productDTO.getPrice());
         existingProduct.setProductType(productDTO.getProductType());
@@ -77,6 +86,7 @@ public class ProductService {
 
     public void deleteProduct(String id) {
         productRepository.deleteById(id);
+        logger.info("Product deleted successfully: " + id);
     }
 
     private ProductDTO mapProductDTO(ProductEntity product) {

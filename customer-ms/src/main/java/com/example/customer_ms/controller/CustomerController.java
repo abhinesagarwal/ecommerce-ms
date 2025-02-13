@@ -5,58 +5,42 @@ import com.example.customer_ms.entity.CustomerEntity;
 import com.example.customer_ms.service.CustomerService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/customers")
 public class CustomerController {
+
     @Autowired
     private CustomerService customerService;
 
-    // GET /customers - Retrieve a list of all customers
     @GetMapping
-    public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
-        List<CustomerDTO> customers = customerService.getAllCustomers();
-        return new ResponseEntity<>(customers, HttpStatus.OK);
+    public List<CustomerEntity> getAllCustomers() {
+        return customerService.getAllCustomers();
     }
 
-    // GET /customers/{id} - Retrieve details of a specific customer
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable String id) {
-        System.out.println("Customer Controller : getCustomerById");
-        CustomerDTO customer = customerService.getCustomerById(id);
-        if (customer == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found with ID: " + id);
-        }
-        return new ResponseEntity<>(customer, HttpStatus.OK);
+    public CustomerEntity getCustomerById(@PathVariable String id) {
+        return customerService.getCustomerById(id);
     }
 
-    // POST /customers - Add a new customer
     @PostMapping
-    public ResponseEntity<CustomerEntity> addCustomer(@Valid @RequestBody CustomerEntity customer) {
-        System.out.println("Customer Controller : addCustomer");
-        CustomerEntity addedCustomer = customerService.addCustomer(customer);
-        return new ResponseEntity<>(addedCustomer, HttpStatus.CREATED);
+    public CustomerEntity addCustomer(@Valid @RequestBody CustomerDTO customerDTO) {
+        CustomerEntity customerEntity = new CustomerEntity();
+        customerEntity.setName(customerDTO.getName());
+        customerEntity.setEmail(customerDTO.getEmail());
+        return customerService.addCustomer(customerEntity);
     }
 
-    // PUT /customers/{id} - Update an existing customer
     @PutMapping("/{id}")
-    public ResponseEntity<CustomerEntity> updateCustomer(@PathVariable String id, @Valid @RequestBody CustomerEntity customer) {
-        System.out.println("Customer Controller : updateCustomer");
-        CustomerEntity updatedCustomer = customerService.updateCustomer(id, customer);
-        return new ResponseEntity<>(updatedCustomer, HttpStatus.OK);
+    public CustomerEntity updateCustomer(@PathVariable String id, @Valid @RequestBody CustomerDTO customerDTO) {
+        return customerService.updateCustomer(id, customerDTO);
     }
 
-    // DELETE /customers/{id} - Delete a customer
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCustomer(@PathVariable String id) {
-        System.out.println("Customer Controller : deleteCustomer");
+    public void deleteCustomer(@PathVariable String id) {
         customerService.deleteCustomer(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

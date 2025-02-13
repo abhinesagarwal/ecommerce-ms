@@ -14,8 +14,6 @@ public class InventoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-
-
     private int quantity;
 
 
