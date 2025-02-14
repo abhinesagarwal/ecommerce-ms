@@ -10,4 +10,8 @@ import lombok.NoArgsConstructor;
 public class InventoryDTO {
     private String id;
     private int quantity;
+
+    public InventoryDTO(int i) {
+        this.quantity = i;
+    }
 }

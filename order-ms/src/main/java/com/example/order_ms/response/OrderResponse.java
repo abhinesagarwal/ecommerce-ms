@@ -16,5 +16,4 @@ public class OrderResponse {
     private CustomerDTO customer;
     private boolean productNotFoundError;
     private boolean customerNotFoundError;
-
 }
